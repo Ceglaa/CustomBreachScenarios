@@ -108,7 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\BreachScenario.cs" />
-    <Compile Include="API\API.cs" />
+    <Compile Include="API\BreachAPI.cs" />
     <Compile Include="API\Objects\AutoNukeObject.cs" />
     <Compile Include="API\Objects\BlackoutObject.cs" />
     <Compile Include="API\Objects\CustomConditionsObject.cs" />
