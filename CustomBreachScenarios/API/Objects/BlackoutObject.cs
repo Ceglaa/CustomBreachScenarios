@@ -24,7 +24,7 @@
         public int Chance { get; set; }
 
         /// <summary>
-        /// Gets or sets List of <see cref="ZoneType"/>s affected by Blackout.
+        /// Gets or sets List of <see cref="ZoneType">Zones</see> affected by Blackout.
         /// </summary>
         public List<ZoneType> Zones { get; set; } = new List<ZoneType>();
     }

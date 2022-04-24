@@ -1,6 +1,7 @@
 ﻿namespace CustomBreachScenarios.API.Objects
 {
     using System.ComponentModel;
+
     using GameCore;
 
     /// <summary>

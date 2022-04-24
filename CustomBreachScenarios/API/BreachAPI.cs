@@ -3,10 +3,12 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
     using CustomBreachScenarios.API.Objects;
+
     using Exiled.API.Features;
     using Exiled.Loader;
-    using MapEditorReborn.API.Features;
+
     using MEC;
     using UnityEngine;
     using Random = UnityEngine.Random;
@@ -19,14 +21,14 @@
         /// <summary>
         /// Gets or sets List of all current <see cref="DelaySpawnSCP"/> coroutines.
         /// </summary>
-        public static List<CoroutineHandle> DelayedSCPSpawnCoroutines { get; set; } = new List<CoroutineHandle>();
+        public static List<CoroutineHandle> DelayedScpSpawnCoroutines { get; set; } = new List<CoroutineHandle>();
 
         /// <summary>
         /// Draws Breach Scenario from <paramref name="inputList"/> list.
         /// </summary>
         /// <param name="inputList">List from all scenarios are outputed.</param>
-        /// <returns><see cref="BreachScenario"/>.</returns>
-        public static BreachScenario DrawScenario(List<BreachScenario> inputList)
+        /// <returns>Selected <see cref="BreachScenario"/> or null if not found.</returns>
+        public static BreachScenario DrawScenario(IEnumerable<BreachScenario> inputList)
         {
             return inputList.FirstOrDefault(x => x.Chance >= Random.Range(1, 101));
         }
@@ -60,7 +62,7 @@
 
             if (scenario.AutoNuke.Chance >= Random.Range(1, 101))
             {
-                Timing.CallDelayed(scenario.AutoNuke.Delay, () => Warhead.Start());
+                Timing.CallDelayed(scenario.AutoNuke.Delay, Warhead.Start);
             }
 
             foreach (TimedCassieObject timedCassieObject in scenario.Cassies)
@@ -68,15 +70,7 @@
                 Cassie.DelayedMessage(timedCassieObject.Announcement, timedCassieObject.Delay, false, timedCassieObject.IsNoisy);
             }
 
-            if (Plugin.IsMapeditorLoaded)
-            {
-                if (!string.IsNullOrEmpty(scenario.MapName))
-                {
-                    MapUtils.LoadMap(MapUtils.GetMapByName(scenario.MapName));
-                }
-            }
-
-            foreach (Door door in Map.Doors)
+            foreach (Door door in Door.List)
             {
                 if (scenario.OpenedDoors.TryGetValue(door.Type, out int chance))
                 {
@@ -87,13 +81,14 @@
                 }
             }
 
-            foreach (Room room in Map.Rooms)
+            foreach (ZoneColorObject zoneColor in scenario.ZoneColors)
             {
-                if (scenario.ZoneColors.TryGetValue(room.Zone, out ZoneColorObject color))
+                foreach (Room room in Room.List)
                 {
-                    room.ResetColor();
-                    Color newcolor = new Color(color.R, color.G, color.B, color.A);
-                    room.Color = newcolor;
+                    if (zoneColor.ZoneType == room.Zone)
+                    {
+                        Timing.CallDelayed(zoneColor.Delay, () => ChangeRoomColorInternal(room, zoneColor));
+                    }
                 }
             }
 
@@ -101,7 +96,7 @@
             {
                 Timing.CallDelayed(spawnObject.Delay, () =>
                 {
-                    DelayedSCPSpawnCoroutines.Add(Timing.CallDelayed(spawnObject.Delay, () => Timing.RunCoroutine(DelaySpawnSCP(spawnObject))));
+                    DelayedScpSpawnCoroutines.Add(Timing.CallDelayed(spawnObject.Delay, () => Timing.RunCoroutine(DelaySpawnSCP(spawnObject))));
                 });
             }
 
@@ -117,6 +112,11 @@
                     Timing.CallDelayed(blackoutObject.Delay, () => Map.TurnOffAllLights(blackoutObject.Time, blackoutObject.Zones));
                 }
             }
+
+            foreach (string command in scenario.Commands)
+            {
+                GameCore.Console.singleton.TypeCommand(command, Server.Host.Sender);
+            }
         }
 
         /// <summary>
@@ -128,6 +128,7 @@
         {
             while (Round.IsStarted)
             {
+                yield return Timing.WaitUntilTrue(() => Player.List.Any(x => x.Role == RoleType.Spectator));
                 List<Player> spectators = Player.Get(RoleType.Spectator).ToList();
                 if (spectators.Count > 0)
                 {
@@ -145,21 +146,33 @@
         /// <param name="doorLockdownObject">DoorLockdownObject.</param>
         public static void ProcessTimedLockdown(DoorLockdownObject doorLockdownObject)
         {
-            List<Door> doors = Map.Doors.Where(x => x.Type == doorLockdownObject.DoorType).ToList();
+            List<Door> doors = Door.Get(doorLockdownObject.DoorType).ToList();
 
             foreach (Door door in doors)
             {
-                if (door.Type == doorLockdownObject.DoorType)
+                if (door.Type != doorLockdownObject.DoorType)
+                    continue;
+
+                if (doorLockdownObject.Chance < Random.Range(1, 101))
+                    continue;
+
+                door.ChangeLock(doorLockdownObject.DoorLockType);
+                if (doorLockdownObject.Time > 0)
                 {
-                    if (doorLockdownObject.Chance >= Random.Range(1, 101))
-                    {
-                        door.ChangeLock(doorLockdownObject.DoorLockType);
-                        if (doorLockdownObject.Time > 0)
-                        {
-                            Timing.CallDelayed(doorLockdownObject.Time, () => door.Unlock());
-                        }
-                    }
+                    Timing.CallDelayed(doorLockdownObject.Time, () => door.Unlock());
                 }
+            }
+        }
+
+        public static void ChangeRoomColorInternal(Room room, ZoneColorObject zoneColorObject)
+        {
+            room.ResetColor();
+            Color newcolor = new Color(zoneColorObject.R, zoneColorObject.G, zoneColorObject.B, zoneColorObject.A);
+            room.Color = newcolor;
+
+            if (zoneColorObject.Time > 0)
+            {
+                Timing.CallDelayed(zoneColorObject.Time, () => room.ResetColor());
             }
         }
     }

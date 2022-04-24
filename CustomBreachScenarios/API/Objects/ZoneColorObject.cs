@@ -1,6 +1,9 @@
 ﻿namespace CustomBreachScenarios.API.Objects
 {
     using System;
+
+    using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
@@ -9,6 +12,18 @@
     [Serializable]
     public class ZoneColorObject
     {
+        /// <summary>
+        /// Gets or sets Zone color change delay.
+        /// </summary>
+        public int Delay { get; set; }
+
+        /// <summary>
+        /// Gets or sets Zone color time.
+        /// </summary>
+        public int Time { get; set; } = 0;
+
+        public ZoneType ZoneType { get; set; }
+
         /// <summary>
         /// Gets or sets Red value.
         /// </summary>
@@ -39,10 +54,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneColorObject"/> class.
         /// </summary>
-        /// <param name="r">Red.</param>
-        /// <param name="g">Green.</param>
-        /// <param name="b">Blue.</param>
-        /// <param name="a">Alpha.</param>
+        /// <param name="r">Red value.</param>
+        /// <param name="g">Green value.</param>
+        /// <param name="b">Blue value.</param>
+        /// <param name="a">Alpha value.</param>
         public ZoneColorObject(float r, float g, float b, float a)
         {
             R = r;
