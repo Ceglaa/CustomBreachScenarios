@@ -46,7 +46,7 @@
         public override PluginPriority Priority => PluginPriority.Medium;
 
         /// <inheritdoc/>
-        public override Version Version { get; } = new Version(1, 0, 1);
+        public override Version Version { get; } = new Version(1, 0, 2);
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion { get; } = new Version(5, 0, 0);
