@@ -1,12 +1,26 @@
-﻿namespace CustomBreachScenarios
+﻿namespace CustomBreachScenarios.EventHandlers
 {
-    using Exiled.API.Features;
+    using System.Linq;
     using Exiled.Events.EventArgs;
 
     /// <summary>
     /// Handles Exiled events.
     /// </summary>
-    internal sealed partial class Handler
+    public sealed partial class Handler
     {
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
+        public void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            if (ev.Player is null)
+                return;
+
+            if (SelectedScenario is null)
+                return;
+
+            if (SelectedScenario.DelayedSCPSpawns.Any(x => x.Role == ev.NewRole))
+            {
+                ev.NewRole = RoleType.ClassD;
+            }
+        }
     }
 }

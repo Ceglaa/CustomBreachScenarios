@@ -42,6 +42,11 @@
         public int Chance { get; internal set; }
 
         /// <summary>
+        /// Gets commands to execute.
+        /// </summary>
+        public List<string> Commands { get; internal set; } = new List<string>();
+
+        /// <summary>
         /// Gets the <see cref="AutoNukeObject"/>.
         /// </summary>
         public AutoNukeObject AutoNuke { get; internal set; } = new AutoNukeObject();
@@ -72,13 +77,13 @@
         public List<BlackoutObject> Blackouts { get; internal set; } = new List<BlackoutObject>();
 
         /// <summary>
+        /// Gets Dictionary of <see cref="ZoneType"/> and <see cref="SerializableColor"/>.
+        /// </summary>
+        public List<ZoneColorObject> ZoneColors { get; internal set; } = new List<ZoneColorObject>();
+
+        /// <summary>
         /// Gets Dictionary of <see cref="DoorType"/> and <see cref="int"/>.
         /// </summary>
         public Dictionary<DoorType, int> OpenedDoors { get; internal set; } = new Dictionary<DoorType, int>();
-
-        /// <summary>
-        /// Gets Dictionary of <see cref="ZoneType"/> and <see cref="SerializableColor"/>.
-        /// </summary>
-        public Dictionary<ZoneType, ZoneColorObject> ZoneColors { get; internal set; } = new Dictionary<ZoneType, ZoneColorObject>();
     }
 }
