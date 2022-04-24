@@ -17,9 +17,8 @@ Scenario contains:
 Example scemario:
 ```yaml
 name: example
-# Map name for MapEditorReborn plugin
-map_name: 
 chance: 0
+commands: []
 auto_nuke:
 # Warhead starts automaticly after delay. If set to 0 it will not start
   delay: 1800
@@ -48,22 +47,23 @@ blackouts:
   zones:
   - Entrance
   - LightContainment
+zone_colors:
+- delay: 10
+  time: 70
+  zone_type: LightContainment
+  r: 1
+  g: 0
+  b: 0
+  a: 0
 opened_doors:
   HeavyContainmentDoor: 50
-zone_colors:
-  HeavyContainment:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
 ```
 
 Example empty scenario:
 ```yaml
 name: emptyexample
-# Map name for MapEditorReborn plugin
-map_name: 
 chance: 0
+commands: []
 auto_nuke:
 # Warhead starts automaticly after delay. If set to 0 it will not start
   delay: 0
