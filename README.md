@@ -1,10 +1,13 @@
-# CustomBreachScenarios
-![img](https://img.shields.io/github/downloads/Ceglaa/CustomBreachScenarios/total?style=for-the-badge)
+# **CustomBreachScenarios**
+[![Downloads](https://img.shields.io/github/downloads/Ceglaa/CustomBreachScenarios/total?style=for-the-badge)](https://github.com/Ceglaa/CustomBreachScenarios/releases)
+![Last Commit](https://img.shields.io/github/last-commit/Ceglaa/CustomBreachScenarios?style=for-the-badge)
+[![Last Release](https://img.shields.io/github/v/release/Ceglaa/CustomBreachScenarios?style=for-the-badge)](https://github.com/Ceglaa/CustomBreachScenarios/releases)<br>
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Exiled-Team/Exiled?label=EXILED&style=for-the-badge)](https://github.com/Exiled-Team/EXILED/releases)
 
-Custom breach scenario will be drawed from all scenarios in **EXILED/Configs/CustomBreachScenarios** path
+### Custom breach scenario will be drawed from all scenarios in **EXILED/Configs/CustomBreachScenarios** path
 
-Scenario contains:
-- Commands executed at the start of the scenario (i will add delays in future)
+#### Scenario contains:
+- Commands executed at the start of the scenario
 - Chance for scenario to occur
 - Custom round conditions
 - Delayed SCP spawns
@@ -14,11 +17,22 @@ Scenario contains:
 - Opened doors on round start
 - Color changes for entire zones
 
-Example scemario:
+### 🔧 Plans for future: 🔧
+- [ ] Custom Team Respawn Queue
+- [ ] Delayed commands
+- [ ] Scenario drawing optimizations
+
+### Examples:
+
+<details>
+  <summary>Example scenario</summary>
+  
 ```yaml
 name: example
 chance: 0
-commands: []
+commands:
+- '/mp l mapname'
+- '/bc 10 test boradcast'
 auto_nuke:
 # Warhead starts automaticly after delay. If set to 0 it will not start
   delay: 1800
@@ -58,8 +72,11 @@ zone_colors:
 opened_doors:
   HeavyContainmentDoor: 50
 ```
+</details>
 
-Example empty scenario:
+<details>
+  <summary>Example empty scenario</summary>
+  
 ```yaml
 name: emptyexample
 chance: 0
@@ -79,3 +96,4 @@ blackouts: []
 opened_doors: {}
 zone_colors: {}
 ```
+</details>
