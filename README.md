@@ -4,7 +4,7 @@
 Custom breach scenario will be drawed from all scenarios in **EXILED/Configs/CustomBreachScenarios** path
 
 Scenario contains:
-- MapEditorReborn map loading integration
+- Commands executed at the start of the scenario (i will add delays in future)
 - Chance for scenario to occur
 - Custom round conditions
 - Delayed SCP spawns
