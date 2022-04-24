@@ -31,12 +31,6 @@
         public string Name { get; internal set; } = "Default";
 
         /// <summary>
-        /// Gets MapEditorReborn map name.
-        /// </summary>
-        [Description("Map name for MapEditorReborn plugin")]
-        public string MapName { get; private set; }
-
-        /// <summary>
         /// Gets Breach Scenario chance.
         /// </summary>
         public int Chance { get; internal set; }

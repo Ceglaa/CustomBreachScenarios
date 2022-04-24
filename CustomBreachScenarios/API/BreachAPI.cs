@@ -55,7 +55,7 @@
         /// <param name="scenario">Scenario to be played.</param>
         public static void PlayScenario(BreachScenario scenario)
         {
-            if (scenario == null)
+            if (scenario is null)
             {
                 return;
             }
