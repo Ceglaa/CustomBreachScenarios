@@ -15,12 +15,12 @@
 - Timed door lockdowns
 - Timed blackouts
 - Opened doors on round start
-- Color changes for entire zones
+- Color changes for entire zones or rooms
 
 ### 🔧 Plans for future: 🔧
 - [ ] Custom Team Respawn Queue
 - [ ] Delayed commands
-- [ ] Scenario drawing optimizations
+- [ ] Scenario drawing optimizations (Scenario drawin will be moved to the plugin's config)
 
 ### Examples:
 
